@@ -2,6 +2,7 @@ import '../styles.css';
 
 import type { ReactNode } from 'react';
 
+import { JotaiProvider } from '../components/JotaiProvider';
 import { PdfWrapper } from '../components/pdfwrapper';
 import { Confetti } from '../components/confetti';
 
@@ -11,7 +12,7 @@ export default async function RootLayout({ children }: RootLayoutProps) {
   const data = await getData();
 
   return (
-    <>
+    <JotaiProvider>
       <div className="min-h-screen">
         <meta property="description" content={data.description} />
         <link rel="icon" type="image/png" href={data.icon} />
@@ -20,7 +21,7 @@ export default async function RootLayout({ children }: RootLayoutProps) {
         </main>
       </div>
       <Confetti />
-    </>
+    </JotaiProvider>
   );
 }
 
