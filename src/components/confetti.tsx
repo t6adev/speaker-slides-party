@@ -14,7 +14,7 @@ const confettiAtom = atom<{ confetti: ReturnType<typeof confetti.create> | null 
   confetti: null,
 });
 
-export type Prticle = { type: 'color'; colors: string[] } | { type: 'shape'; texts: string[] };
+export type Prticle = { type: 'color' } | { type: 'shape'; texts: string[] };
 
 export const runConfettiAtom = atom(
   null,
@@ -23,9 +23,9 @@ export const runConfettiAtom = atom(
     if (c.confetti) {
       if (particle.type === 'color') {
         c.confetti({
-          particleCount: particle.colors.length,
-          colors: particle.colors,
-          scalar: 3,
+          particleCount: 4,
+          spread: 70,
+          scalar: 2,
           origin,
         });
       }
@@ -33,6 +33,7 @@ export const runConfettiAtom = atom(
         c.confetti({
           particleCount: particle.texts.length,
           shapes: particle.texts.map(getShape),
+          spread: 70,
           scalar: 3,
           origin,
         });

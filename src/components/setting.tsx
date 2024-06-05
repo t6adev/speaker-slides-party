@@ -33,33 +33,6 @@ import { useShortcut } from './useShortcut';
 
 import { confettiEmojis } from '../presentationConfig';
 
-const colors = [
-  '#FF0000', // Red
-  '#00FF00', // Lime
-  '#0000FF', // Blue
-  '#FFFF00', // Yellow
-  '#FF00FF', // Fuchsia
-  '#00FFFF', // Aqua
-  '#800000', // Maroon
-  '#808000', // Olive
-  '#008000', // Green
-  '#800080', // Purple
-  '#008080', // Teal
-  '#000080', // Navy
-  '#FFA500', // Orange
-  '#A52A2A', // Brown
-  '#D2691E', // Chocolate
-  '#5F9EA0', // CadetBlue
-  '#7FFF00', // Chartreuse
-  '#FF7F50', // Coral
-  '#6495ED', // CornflowerBlue
-  '#DC143C', // Crimson
-  '#00FA9A', // MediumSpringGreen
-  '#FFD700', // Gold
-  '#4B0082', // Indigo
-  '#ADFF2F', // GreenYellow
-];
-
 export const speakerModeAtom = atom(false);
 
 const SpeakerMode = () => {
@@ -89,13 +62,7 @@ const SpeakerMode = () => {
 
 export const partyModeAtom = atom(true);
 export const confettiTriggerTypeAtom = atom<'AUTO' | 'KeyC'>('AUTO');
-export const confettiColorAtom = atom<(typeof colors)[number]>(
-  colors[Math.floor(Math.random() * colors.length)] as string
-);
-const changeConfettiColorAtom = atom(null, (get, set) => {
-  set(confettiColorAtom, colors[Math.floor(Math.random() * colors.length)] as string);
-});
-const confettiTypes = ['Any Color', ...confettiEmojis] as const;
+const confettiTypes = ['🎉', ...confettiEmojis] as const;
 export const confettiTypeAtom = atom<(typeof confettiTypes)[number]>(confettiTypes[0]);
 
 const usePartyModeShortcut = () => {
@@ -208,21 +175,18 @@ const PartyModeToggle = () => {
 const ConfettiTypeSelect = () => {
   const [confettiType, setConfettiType] = useAtom(confettiTypeAtom);
   const partyMode = useAtomValue(partyModeAtom);
-  const confettiColor = useAtomValue(confettiColorAtom);
-  const changeConfettiColor = useSetAtom(changeConfettiColorAtom);
   useShortcut(['Digit1'], () => {
-    setConfettiType(confettiEmojis[0] as string);
-    changeConfettiColor();
+    setConfettiType('🎉');
   });
-  useShortcut(['Digit2'], () => setConfettiType(confettiEmojis[1] as string));
-  useShortcut(['Digit3'], () => setConfettiType(confettiEmojis[2] as string));
-  useShortcut(['Digit4'], () => setConfettiType(confettiEmojis[3] as string));
-  useShortcut(['Digit5'], () => setConfettiType(confettiEmojis[4] as string));
-  useShortcut(['Digit6'], () => setConfettiType(confettiEmojis[5] as string));
-  useShortcut(['Digit7'], () => setConfettiType(confettiEmojis[6] as string));
-  useShortcut(['Digit8'], () => setConfettiType(confettiEmojis[7] as string));
-  useShortcut(['Digit9'], () => setConfettiType(confettiEmojis[8] as string));
-  useShortcut(['Digit0'], () => setConfettiType(confettiEmojis[0] as string));
+  useShortcut(['Digit2'], () => setConfettiType(confettiEmojis[0] as string));
+  useShortcut(['Digit3'], () => setConfettiType(confettiEmojis[1] as string));
+  useShortcut(['Digit4'], () => setConfettiType(confettiEmojis[2] as string));
+  useShortcut(['Digit5'], () => setConfettiType(confettiEmojis[3] as string));
+  useShortcut(['Digit6'], () => setConfettiType(confettiEmojis[4] as string));
+  useShortcut(['Digit7'], () => setConfettiType(confettiEmojis[5] as string));
+  useShortcut(['Digit8'], () => setConfettiType(confettiEmojis[6] as string));
+  useShortcut(['Digit9'], () => setConfettiType(confettiEmojis[7] as string));
+  useShortcut(['Digit0'], () => setConfettiType(confettiEmojis[8] as string));
   if (!partyMode) return null;
   return (
     <div className="flex items-center space-x-1">
@@ -236,11 +200,7 @@ const ConfettiTypeSelect = () => {
                 confettiType === type ? 'text-lg w-10 h-10 bg-gray-300/50' : 'text-sm w-5 h-5'
               )}
             >
-              {type === 'Any Color' ? (
-                <span style={{ color: confettiColor }}>●</span>
-              ) : (
-                <span>{type}</span>
-              )}
+              <span>{type}</span>
             </TooltipTrigger>
             <TooltipContent>
               <p className="text-sm text-gray-400">

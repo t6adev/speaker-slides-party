@@ -11,7 +11,6 @@ import {
   partyModeAtom,
   confettiTriggerTypeAtom,
   confettiTypeAtom,
-  confettiColorAtom,
 } from './setting';
 import { useMouseMove } from './useMouseMove';
 import { useDebouncer } from './useDebouncer';
@@ -27,11 +26,9 @@ export const Party = ({ children }: { children: React.ReactNode }) => {
   const [spaceKeyDown, setSpaceKeyDown] = useState(false);
   const currentPointerRef = useRef({ x: 0, y: 0 });
   const debouncer = useDebouncer();
-  const myColor = useAtomValue(confettiColorAtom);
-  const colors = [myColor];
   const particle =
-    confettiType === 'Any Color'
-      ? { type: 'color' as const, colors }
+    confettiType === '🎉'
+      ? { type: 'color' as const }
       : { type: 'shape' as const, texts: [confettiType] };
   const socket = usePartySocket({
     room: `speaker${speakerIndex}`,
