@@ -10,6 +10,9 @@ Make your event more precious time for all!!
 - ⏳ Timer to control time table
 - 🎈 Realtime reactions for hyping an event by confetti (No longer silent, thanks to [partykit](https://www.partykit.io/))
 
+## Sample Link
+https://reactfan.tech-space-production.workers.dev/
+
 ## Preparation
 
 - 1. Make `/pdfs` directory at the root and put speaker's info and pdf file
