@@ -10,7 +10,6 @@ const infoSchema = z.object({
   title: z.string(),
   speaker: z.object({
     name: z.string(),
-    connpass: z.string(),
     description: z.string(),
     imageUrl: z.union([z.string().url(), z.literal('')]),
     links: z.array(z.string().url()),
