@@ -3,6 +3,8 @@
   "version": "0.0.0",
   "type": "module",
   "private": true,
+  "author": "Teruhisa Yamamoto",
+  "license": "MIT",
   "scripts": {
     "dev-waku": "waku dev",
     "build": "waku build --with-partykit && pnpm inject-partykit",
