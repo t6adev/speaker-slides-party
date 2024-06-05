@@ -25,7 +25,7 @@ export const runConfettiAtom = atom(
         c.confetti({
           particleCount: 4,
           spread: 70,
-          scalar: 2,
+          scalar: 1,
           origin,
         });
       }
