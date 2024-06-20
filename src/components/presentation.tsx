@@ -16,7 +16,6 @@ import { FullscreenButton } from './fullscreenButton';
 import { pdfs } from '../../pdfs/loader';
 import { options } from '../pdfOptions';
 import { useShortcut } from './useShortcut';
-import { backgroundRepeat } from 'html2canvas/dist/types/css/property-descriptors/background-repeat';
 
 const useCountdownTimer = (defaultSec: number, stop: boolean) => {
   const [sec, setSec] = useState(defaultSec);
