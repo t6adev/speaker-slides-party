@@ -165,19 +165,12 @@ export const Presentation = () => {
   if (!info || !file) return null;
   const { title, speaker, appendixLinks } = info;
 
-  const fullscreenStyle =
-    pageRef && pageRef?.getBoundingClientRect().width < pageRef?.getBoundingClientRect().height
-      ? 'overflow-auto'
-      : 'items-center';
   return (
     <div className="flex-1 flex flex-col">
       <h1 className="text-2xl font-bold tracking-tight mt-8">{title}</h1>
       <h2 className="text-lg tracking-tight mt-2 text-gray-700">By {speaker.name}</h2>
       <div className="mt-8 flex-1 flex">
-        <div
-          ref={(ref) => setPresentationRef(ref)}
-          className={cn('relative flex', fullscreenStyle)}
-        >
+        <div ref={(ref) => setPresentationRef(ref)} className="relative flex overflow-auto">
           <Document
             file={file}
             options={options}
