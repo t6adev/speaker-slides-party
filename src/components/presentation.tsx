@@ -194,7 +194,7 @@ export const Presentation = () => {
             />
           </div>
           {showNextSpeaker && nextInfo && (
-            <div className="absolute bottom-2 right-2 z-10">
+            <div className={cn(fullscreen ? 'fixed' : 'absolute', 'bottom-2 right-2 z-10')}>
               <div className="bg-gray-50/60 px-4 py-2">
                 <p className="text-sm italic">
                   Next: {nextInfo?.title} by {nextInfo?.speaker.name}
