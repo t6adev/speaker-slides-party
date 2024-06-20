@@ -25,6 +25,7 @@
     "clsx": "^2.1.1",
     "date-fns": "^3.6.0",
     "hono": "^4.4.0",
+    "html2canvas": "^1.4.1",
     "jotai": "^2.8.2",
     "jotai-location": "^0.5.5",
     "lucide-react": "^0.379.0",

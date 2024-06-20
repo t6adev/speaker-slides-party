@@ -1,10 +1,11 @@
 'use client';
 
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useState, useEffect, useRef, useCallback, MouseEventHandler, CSSProperties } from 'react';
 import { Document, Page } from 'react-pdf';
 import { useAtom, useAtomValue } from 'jotai';
 import { CirclePlay, CirclePause } from 'lucide-react';
 import { format } from 'date-fns';
+import html2canvas from 'html2canvas';
 
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
@@ -15,6 +16,7 @@ import { FullscreenButton } from './fullscreenButton';
 import { pdfs } from '../../pdfs/loader';
 import { options } from '../pdfOptions';
 import { useShortcut } from './useShortcut';
+import { backgroundRepeat } from 'html2canvas/dist/types/css/property-descriptors/background-repeat';
 
 const useCountdownTimer = (defaultSec: number, stop: boolean) => {
   const [sec, setSec] = useState(defaultSec);
@@ -111,6 +113,9 @@ export const Presentation = () => {
   const [fullscreen, setFullscreen] = useState<{
     width: number;
   } | null>(null);
+  const [magnifierMode, setMagnifierMode] = useState(false);
+  const [magnifierStyle, setMagnifierStyle] = useState<CSSProperties | null>(null);
+  const [fullscreenCanvasDataURL, setFullscreenCanvasDataURL] = useState<string | null>(null);
   const [showNextSpeaker, setShowNextSpeaker] = useState(false);
 
   useEffect(() => {
@@ -160,6 +165,40 @@ export const Presentation = () => {
       }
     }, [pageIndex, numPages])
   );
+  useShortcut(
+    ['KeyM'],
+    useCallback(async () => {
+      const nextMagnifierMode = !magnifierMode;
+      setMagnifierMode(nextMagnifierMode);
+      if (nextMagnifierMode && pageRef && document.fullscreenElement) {
+        setFullscreenCanvasDataURL((await html2canvas(pageRef)).toDataURL());
+      }
+      if (!nextMagnifierMode) {
+        setFullscreenCanvasDataURL(null);
+        setMagnifierStyle(null);
+      }
+    }, [magnifierMode, pageRef])
+  );
+
+  const handleMouseMove: MouseEventHandler<HTMLDivElement> = useCallback(
+    async (e) => {
+      if (pageRef && document.fullscreenElement && magnifierMode && fullscreenCanvasDataURL) {
+        const rect = pageRef.getBoundingClientRect();
+        const x = e.clientX + document.fullscreenElement.scrollLeft;
+        const y = e.clientY + document.fullscreenElement.scrollTop;
+
+        setMagnifierStyle({
+          backgroundImage: `url(${fullscreenCanvasDataURL})`,
+          backgroundPosition: `-${x * 2 - 300}px -${y * 2 - 300}px`,
+          backgroundSize: `${rect.width * 2}px ${rect.height * 2}px`,
+          backgroundRepeat: 'no-repeat',
+          top: `${y - 300}px`,
+        });
+      }
+    },
+    [pageRef, magnifierMode, fullscreenCanvasDataURL]
+  );
+
   const { file, info } = pdfs[speakerIndex] || {};
   const { info: nextInfo } = pdfs[speakerIndex + 1] || {};
   if (!info || !file) return null;
@@ -170,7 +209,11 @@ export const Presentation = () => {
       <h1 className="text-2xl font-bold tracking-tight mt-8">{title}</h1>
       <h2 className="text-lg tracking-tight mt-2 text-gray-700">By {speaker.name}</h2>
       <div className="mt-8 flex-1 flex">
-        <div ref={(ref) => setPresentationRef(ref)} className="relative flex overflow-auto">
+        <div
+          ref={(ref) => setPresentationRef(ref)}
+          className="relative flex overflow-auto"
+          onMouseMove={handleMouseMove}
+        >
           <Document
             file={file}
             options={options}
@@ -201,6 +244,18 @@ export const Presentation = () => {
                 </p>
               </div>
             </div>
+          )}
+          {magnifierMode && magnifierStyle && document.fullscreenElement && (
+            <div
+              style={{
+                position: 'absolute',
+                width: '100vw',
+                height: '600px',
+                border: '2px solid #000',
+                pointerEvents: 'none',
+                ...magnifierStyle,
+              }}
+            />
           )}
         </div>
       </div>
