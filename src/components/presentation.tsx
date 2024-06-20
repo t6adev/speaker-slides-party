@@ -187,7 +187,7 @@ export const Presentation = () => {
               canvasRef={(ref) => setPageRef(ref)}
             />
           </Document>
-          <div className="absolute bottom-2 left-2 z-10">
+          <div className={cn(fullscreen ? 'fixed' : 'absolute', 'bottom-2 left-2 z-10')}>
             <CountdownTimer
               key={speakerIndex}
               trigger={{ th: 60 * 2, cb: () => setShowNextSpeaker(true) }}
